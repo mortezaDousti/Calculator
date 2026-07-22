@@ -1,32 +1,11 @@
 const display = document.querySelector('.display');
+display.value = '0';
 const buttons = document.querySelectorAll('button');
 
 const operators = ['+', '-', '*', '/'];
 
 let hasError = false;
 let hasResult = false;
-
-function addToDisplay(value) {
-  if (hasResult) {
-    display.value = '';
-    hasResult = false;
-  } 
-    display.value += value;
-  
-}
-
-function clearDisplay() {
-  display.value = '';
-  hasError = false;
-}
-
-function deleteLast() {
-  if (hasError) {
-    clearDisplay();
-    return;
-  }
-  display.value = display.value.slice(0, -1);
-}
 
 function handleInput(value) {
   if (value === 'C') {
@@ -48,6 +27,39 @@ function handleInput(value) {
     }
   }
 }
+
+function addToDisplay(value) {
+  if (hasResult && operators.includes(value)) {
+    hasResult = false;
+  }
+  if (hasResult && !operators.includes(value)) {
+    display.value = '';
+    hasResult = false;
+  }
+  if (display.value === '0') {
+    display.value = '';
+  }
+  display.value += value;
+}
+
+function clearDisplay() {
+  display.value = '0';
+  hasError = false;
+  hasResult = false;
+}
+
+function deleteLast() {
+  if (hasError) {
+    clearDisplay();
+    return;
+  }
+  display.value = display.value.slice(0, -1);
+  if (display.value === '') {
+    display.value = '0';
+  }
+  hasResult = false;
+}
+
 function calculate() {
   if (display.value !== '' && display.value !== 'Error') {
     try {
@@ -59,7 +71,7 @@ function calculate() {
       hasError = true;
     }
   } else {
-    display.value = '';
+    display.value = '0';
     hasError = false;
   }
 }
