@@ -6,6 +6,7 @@ const operators = ['+', '-', '*', '/'];
 
 let hasError = false;
 let hasResult = false;
+let isInitialZero = true;
 
 function handleInput(value) {
   if (value === 'C') {
@@ -13,11 +14,16 @@ function handleInput(value) {
   } else if (value === '⌫') {
     deleteLast();
   } else if (value === '=') {
+    if (hasError) {
+      clearDisplay();
+      return;
+    }
     calculate();
   } else {
     if (hasError) {
       display.value = value;
       hasError = false;
+      return;
     } else {
       const lastChar = display.value.slice(-1);
       if (operators.includes(value) && operators.includes(lastChar)) {
@@ -36,7 +42,11 @@ function addToDisplay(value) {
     display.value = '';
     hasResult = false;
   }
-  if (display.value === '0') {
+  if (isInitialZero) {
+    display.value = '';
+    isInitialZero = false;
+  }
+  if (display.value === '0' && !operators.includes(value)) {
     display.value = '';
   }
   display.value += value;
@@ -46,6 +56,7 @@ function clearDisplay() {
   display.value = '0';
   hasError = false;
   hasResult = false;
+  isInitialZero = true;
 }
 
 function deleteLast() {
@@ -56,6 +67,7 @@ function deleteLast() {
   display.value = display.value.slice(0, -1);
   if (display.value === '') {
     display.value = '0';
+    isInitialZero = true;
   }
   hasResult = false;
 }
@@ -63,7 +75,11 @@ function deleteLast() {
 function calculate() {
   if (display.value !== '' && display.value !== 'Error') {
     try {
-      display.value = eval(display.value);
+      const result = eval(display.value);
+      if (!Number.isFinite(result)) {
+        throw new console.error();
+      }
+      display.value = result;
       hasError = false;
       hasResult = true;
     } catch {
