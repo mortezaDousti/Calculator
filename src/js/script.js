@@ -14,11 +14,7 @@ function handleInput(value) {
   } else if (value === '⌫') {
     deleteLast();
   } else if (value === '=') {
-    if (hasError) {
-      clearDisplay();
-      return;
-    }
-    calculate();
+    handleEqual();
   } else {
     if (hasError) {
       display.value = value;
@@ -29,27 +25,12 @@ function handleInput(value) {
       if (operators.includes(value) && operators.includes(lastChar)) {
         return;
       }
+      if (value === '.' && !canAddDot()) {
+        return;
+      }
       addToDisplay(value);
     }
   }
-}
-
-function addToDisplay(value) {
-  if (hasResult && operators.includes(value)) {
-    hasResult = false;
-  }
-  if (hasResult && !operators.includes(value)) {
-    display.value = '';
-    hasResult = false;
-  }
-  if (isInitialZero) {
-    display.value = '';
-    isInitialZero = false;
-  }
-  if (display.value === '0' && !operators.includes(value)) {
-    display.value = '';
-  }
-  display.value += value;
 }
 
 function clearDisplay() {
@@ -72,24 +53,62 @@ function deleteLast() {
   hasResult = false;
 }
 
+function canAddDot() {
+  const lastNumber = display.value.split(/[+\-*/]/).pop();
+  return !lastNumber.includes('.');
+}
+
+function handleEqual() {
+  if (hasError) {
+    clearDisplay();
+    return;
+  }
+  calculate();
+}
+
 function calculate() {
-  if (display.value !== '' && display.value !== 'Error') {
+  if (display.value !== '0' && display.value !== 'Error') {
     try {
       const result = eval(display.value);
       if (!Number.isFinite(result)) {
-        throw new console.error();
+        throw new Error();
       }
       display.value = result;
       hasError = false;
       hasResult = true;
+      isInitialZero = false;
     } catch {
       display.value = 'Error';
       hasError = true;
+      hasResult = false;
     }
   } else {
     display.value = '0';
     hasError = false;
   }
+}
+
+function addToDisplay(value) {
+  if (hasResult && operators.includes(value)) {
+    hasResult = false;
+  }
+
+  if (hasResult && !operators.includes(value)) {
+    display.value = '';
+    hasResult = false;
+  }
+
+  if (isInitialZero) {
+    if (value === '.') {
+      display.value = '0';
+    } else {
+      display.value = '';
+    }
+
+    isInitialZero = false;
+  }
+
+  display.value += value;
 }
 
 buttons.forEach((button) => {
