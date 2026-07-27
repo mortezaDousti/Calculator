@@ -22,8 +22,11 @@ function handleInput(value) {
       return;
     } else {
       const lastChar = display.value.slice(-1);
-      if (operators.includes(value) && operators.includes(lastChar)) {
+      if (isInitialZero && operators.includes(value)) {
         return;
+      }
+      if (operators.includes(value) && operators.includes(lastChar)) {
+        display.value = display.value.slice(0, -1);
       }
       if (value === '.' && !canAddDot()) {
         return;
