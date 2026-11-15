@@ -5,19 +5,16 @@
 }
 body {
   min-height: 100vh;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
   background-color: #eaf4ff;
-  font-family: 'Courier New', Courier, monospace;
+  font-family: "Courier New", Courier, monospace;
 }
 .header {
-  width: 100%;
   background-color: #1976d2;
   color: white;
   text-align: center;
   padding: 20px;
   font-weight: bold;
+  box-shadow: inset 0px 0px 17px 13px #ae9292;
 }
 
 .container {
@@ -27,13 +24,11 @@ body {
   align-items: center;
 }
 .calculator {
-  border: 3px solid rgb(0, 0, 0);
-  padding: 30px;
-  border-radius: 10px;
-  background-color: #1976d2;
+  padding: 40px;
+  border-radius: 24px;
+  background-color: #2e679f;
 }
 .display {
-  width: 100%;
   padding: 10px;
   border: 1px solid rgb(0, 0, 0);
   border-radius: 10px;
@@ -52,7 +47,7 @@ body {
   grid-template-columns: repeat(4, 1fr);
 }
 button {
-  background-color: rgb(255, 255, 255);
+  background-color: rgb(233 195 195);
   font-size: 25px;
   font-weight: bold;
   margin: 5px;
@@ -65,4 +60,22 @@ button {
 button:hover {
   background-color: rgb(80, 80, 80);
   color: rgb(250, 250, 250);
+}
+
+.skill-card {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.skill-card div {
+  background-color: #1976d2;
+  width: 200px;
+  color: white;
+  text-align: center;
+  padding: 20px;
+  margin: 26px;
+  font-weight: bold;
+  box-shadow: inset 0px 0px 19px 5px #ae9292;
+  border-radius: 10px;
 }
